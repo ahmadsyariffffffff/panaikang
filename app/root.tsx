@@ -6,9 +6,10 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
 import type { Route } from "./+types/root";
 import "./app.css";
+import Navbar from "./navbar";
+import Footer from "./footer";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -32,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-inter bg-gray-50 text-gray-800">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -41,8 +42,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  return <Outlet />;
+export default function Root() {
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar selalu di atas */}
+      <Navbar />
+
+      {/* Isi halaman */}
+      <main className="flex-grow p-6 pt-20">
+        <Outlet />
+      </main>
+
+      {/* Footer selalu di bawah */}
+      <Footer />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -63,10 +77,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
+      <h1 className="text-3xl font-bold text-red-600">{message}</h1>
+      <p className="text-gray-700">{details}</p>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre className="w-full p-4 overflow-x-auto bg-gray-100 rounded-lg">
           <code>{stack}</code>
         </pre>
       )}
